@@ -1,0 +1,31 @@
+/* TODO: change key when published */
+{
+  "manifest_version": 2,
+
+  "name": "auto-whenisgood",
+  "description": "Draws from Google Calendar to fill out whenisgood forms",
+  "version": "1.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0W0/YVPvLrj2cWBOXfPBBYwPp56R+OJb9QLudyMpigF+V4DFV0NEUnbo9iA6m+7cVPiD6YbhbIaiAoHSdtqEKwaYvrEJRGuGsLjDq+RMwG2x+FcGIsO4ny0BuZaZ/Q2+DaL33NBUl2h9dIi1xa0Suq6qpoJ4yykTu9y7Q6rB9ulJze6DiZL7LWU5NzHCEWt21zAhpLZOqvYY8wzY69pMf+P0+uOLuy87x84rvCRNegbSmEYLC5f4y6ikjVnFUxJBxMlpMg3bByxbrLVBFPuHj4khkr6adUXgks2vBBHFcrRh5EYXopI+PLwUJPfFtzyN8+L7swen9kcK8gXMwX28KwIDAQAB",
+  "content_scripts": [
+    {
+      "matches": ["*://*.whenisgood.net/*"],
+      "exclude_matches": [
+        "*://*.whenisgood.net/*/results/*"
+      ],
+      "js": ["lib/underscore.min.js", "lib/jquery.js", "lib/moment.min.js", "lib/moment-timezone-data.js", "main.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "scripts": ["lib/underscore.min.js", "lib/jquery.js", "utils.js", "background.js"]
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com; object-src 'self'",
+  "permissions": ["identity", "https://apis.google.com/"],
+  "oauth2": {
+    "client_id": "900512445690-lhlj7951lc82ro5ncno5djlqtl413u1q.apps.googleusercontent.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/calendar"
+      ]
+  }   
+}
