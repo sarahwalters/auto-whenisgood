@@ -5,18 +5,17 @@ var isodates = [];
 _.each(proposed, function(aProposed) {
 	var millis = parseInt($(aProposed).attr('id'));
 	var momentDate = moment(millis).tz('GMT');
-	isodates.push({
-		day: momentDate.date(),
-		month: monthNames[momentDate.month()],
-		year: momentDate.year(),
-		hour: momentDate.hour(),
-		minute: momentDate.minute()
-	});
+	isodates.push(momentDate);
 });
 
-if (isodates.length >== 0) {
-	chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-	  console.log('Got response:');
-	  console.log(response.farewell);
+if (isodates.length >= 2) {
+	var requestBody = {
+		type: 'freebusyReq',
+		timeMin: isodates[0].format(),
+		timeMax: isodates[isodates.length - 1].format()
+	};
+
+	chrome.runtime.sendMessage(requestBody, function(response) {
+	  console.log(response);
 	});
 }

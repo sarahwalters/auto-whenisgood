@@ -25,17 +25,17 @@ function calendarQuery() {
     'path': 'calendar/v3/users/me/calendarList',
   });
   restRequest.then(function(resp) {
-    freebusyQuery(resp.result.items);
+    window.calendars = resp.result.items;
   }, function(error) {
     console.log(error);
   });
 }
 
-function freebusyQuery(calendars) {
+function freebusyQuery(timeMin, timeMax) {
   var requestBody = {
-    'timeMin': '2015-09-03T10:00:00.000-07:00',
-    'timeMax': '2015-09-08T10:00:00.000-07:00',
-    'items': _.map(calendars, function(aCalendar) { 
+    'timeMin': timeMin,
+    'timeMax': timeMax,
+    'items': _.map(window.calendars, function(aCalendar) { 
       return { 'id': aCalendar.id }; 
     })
   };
@@ -46,23 +46,19 @@ function freebusyQuery(calendars) {
     'body': requestBody
   });
 
-  restRequest.then(function(resp) {
-    console.log(resp.result);
+  return restRequest.then(function(resp) {
+    return resp.result;
   }, function(error) {
-    console.log(error);
+    return error;
   });
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.greeting == "hello") {
-    // console.log(chrome.identity.getProfileUserInfo);
-    // chrome.identity.getProfileUserInfo(function(userInfo) {
-    //   console.log(userInfo);
-    //   sendResponse({farewell: userInfo});
-    // });
-    //sendResponse({farewell: 'test'});
-    sendResponse({farewell: 'test'})
+  if (request.type == 'freebusyReq') {
+    freebusyQuery(request.timeMin, request.timeMax).
+      then(function(resp) {
+        sendResponse({freebusyData: resp});
+      });
+    return true; // chromium bug: https://code.google.com/p/chromium/issues/detail?id=343007
   }
 });
-
-// console.log('after other function');
