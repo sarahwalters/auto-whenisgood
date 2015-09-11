@@ -20,7 +20,7 @@
     "scripts": ["lib/underscore.min.js", "lib/jquery.js", "utils.js", "background.js"]
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com; object-src 'self'",
-  "permissions": ["identity", "https://apis.google.com/"],
+  "permissions": ["tabs", "identity", "https://apis.google.com/", "*://*.whenisgood.net/*"],
   "oauth2": {
     "client_id": "900512445690-lhlj7951lc82ro5ncno5djlqtl413u1q.apps.googleusercontent.com",
       "scopes": [

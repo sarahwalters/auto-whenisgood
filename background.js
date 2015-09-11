@@ -61,4 +61,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       });
     return true; // chromium bug: https://code.google.com/p/chromium/issues/detail?id=343007
   }
+
+  if (request.type == 'selectionReq') {
+    chrome.tabs.executeScript({
+      code: '$("'+request.proposedId+'").mousedown().mouseup()' // still no -- can't access DOM
+    });
+  }
 });
